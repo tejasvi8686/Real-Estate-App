@@ -38,7 +38,7 @@ export default {
   search,
   person,
   bell,
-  filter,
+  filter, 
   star,
   heart,
   backArrow,
