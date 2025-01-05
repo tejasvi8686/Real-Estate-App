@@ -10,6 +10,8 @@ export default function Index() {
         alignItems: "center",
       }}
     >
+      <Text className="text-4xl text-red-600" >Native wind</Text>
+
       <Link href="/sign-in">Sign In</Link>
       <Link href="/explore">Explore</Link>
       <Link href="/profile">Profile</Link>
