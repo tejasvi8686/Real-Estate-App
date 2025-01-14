@@ -1,3 +1,4 @@
+import { Session } from "./../node_modules/appwrite/src/models";
 import {
   Client,
   Account,
@@ -12,9 +13,9 @@ import * as Linking from "expo-linking";
 import { openAuthSessionAsync } from "expo-web-browser";
 
 export const config = {
-  platform: "com.dev.Restate",
+  platform: "com.real.state",
   endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
-   projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
+  projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
   // databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID,
   // galleriesCollectionId:
   //   process.env.EXPO_PUBLIC_APPWRITE_GALLERIES_COLLECTION_ID,
@@ -80,12 +81,12 @@ export async function logout() {
 
 export async function getCurrentUser() {
   try {
-    const result = await account.get();
-    if (result.$id) {
-      const userAvatar = avatar.getInitials(result.name);
+    const response = await account.get();
+    if (response.$id) {
+      const userAvatar = avatar.getInitials(response.name);
 
       return {
-        ...result,
+        ...response,
         avatar: userAvatar.toString(),
       };
     }
