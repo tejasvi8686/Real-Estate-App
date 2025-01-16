@@ -50,28 +50,28 @@ const TabsLayout = () => {
         options={{
           title: "Home",
           headerShown: false,
-          tabBarIcon: () => (
+          tabBarIcon: ({ focused }) => (
             <TabIcon icon={icons.home} focused={focused} title="Home" />
           ),
         }}
       />
-       <Tabs.Screen
+      <Tabs.Screen
         name="explore"
         options={{
           title: "Explore",
           headerShown: false,
-          tabBarIcon: () => (
-            <TabIcon icon={icons.search} focused={false} title="Explore" />
+          tabBarIcon: ({ focused }) => (
+            <TabIcon icon={icons.search} focused={focused} title="Explore" />
           ),
         }}
       />
-       <Tabs.Screen
+      <Tabs.Screen
         name="profile"
         options={{
           title: "Profile",
           headerShown: false,
-          tabBarIcon: () => (
-            <TabIcon icon={icons.person} focused={false} title="Profile" />
+          tabBarIcon: ({ focused }) => (
+            <TabIcon icon={icons.person} focused={focused} title="Profile" />
           ),
         }}
       />
