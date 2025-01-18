@@ -1,7 +1,43 @@
-import { ScrollView, Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  ScrollView,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ImageSourcePropType,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import icons from "@/constants/icons";
+
 import images from "@/constants/images";
+import icons from "@/constants/icons";
+
+interface SettingsItemsProps {
+  icon: ImageSourcePropType;
+  title: string;
+  onPress?: () => void;
+  textStyle?: string;
+  showArrow?: boolean;
+}
+
+console.log("icons.calendar=====>", icons.calendar);
+
+
+const SettingsItem = ({
+  icon,
+  title,
+  onPress,
+  textStyle,
+  showArrow,
+}: SettingsItemsProps) => {
+  return (
+    <TouchableOpacity>
+      <View>
+        <Image source={icons} />
+        <Text>{title}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 export default function Index() {
   return (
@@ -23,10 +59,13 @@ export default function Index() {
             <TouchableOpacity className="absolute bottom-11 right-2 ">
               <Image source={icons.edit} className="size-9" />
             </TouchableOpacity>
-            <Text className="text-2xl font-rubik-bold mt-2" >Tejasvi | Raj</Text>
+            <Text className="text-2xl font-rubik-bold mt-2">Tejasvi | Raj</Text>
           </View>
         </View>
-        <View className="flex flex-col mt-10"></View>
+        <View className="flex flex-col mt-10">
+          <SettingsItem icon={icons.calendar} title="My Bookings" />
+          <SettingsItem icon={icons.wallet} title="My Bookings" />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
