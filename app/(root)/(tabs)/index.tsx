@@ -5,11 +5,15 @@ import {
   Image,
   TouchableOpacity,
   ImageSourcePropType,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import images from "@/constants/images";
 import icons from "@/constants/icons";
+import { settings } from "@/constants/data";
+import { useGlobalContext } from "@/lib/global-provider";
+import { logout } from "@/lib/appwrite";
 
 interface SettingsItemsProps {
   icon: ImageSourcePropType;
@@ -19,7 +23,6 @@ interface SettingsItemsProps {
   showArrow?: boolean;
 }
 
-console.log("icons.calendar=====>", icons.calendar);
 
 
 const SettingsItem = ({
@@ -30,18 +33,41 @@ const SettingsItem = ({
   showArrow,
 }: SettingsItemsProps) => {
   return (
-    <TouchableOpacity>
-      <View>
-        <Image source={icons} />
-        <Text>{title}</Text>
+    <TouchableOpacity
+      onPress={onPress}
+      className="flex flex-row items-center justify-between py-3"
+    >
+      <View className="flex flex-row items-center gap-3">
+        <Image source={icon} className="size-6" />
+        <Text
+          className={`text-lg  font-rubik-medium text-black-300 ${textStyle} `}
+        >
+          {title}
+        </Text>
       </View>
+      {showArrow && <Image source={icons.rightArrow} className="size-5" />}
     </TouchableOpacity>
   );
 };
 
 export default function Index() {
+  const { user ,refetch } = useGlobalContext()
+
+  const handleLogout = async () => {
+    try {
+      const result = await logout();
+      if (result) {
+        Alert.alert("Success", "You have been logged out successfully");
+        if (refetch) refetch();
+      } else {
+        Alert.alert("Error", "Something went wrong, please try again");
+      }
+    } catch (error) {
+      Alert.alert("Error", "An unexpected error occurred");
+    }
+  };
   return (
-    <SafeAreaView className="">
+    <SafeAreaView className="h-full bg-white">
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerClassName="pb-32 px-7"
@@ -53,18 +79,41 @@ export default function Index() {
         <View className="flex flex-row items-center justify-center mt-5">
           <View className="flex flex-col items-center relative mt-5">
             <Image
-              source={images.avatar}
+              source={{uri: user?.avatar}}
               className="size-44 relative rounded-full"
             />
             <TouchableOpacity className="absolute bottom-11 right-2 ">
               <Image source={icons.edit} className="size-9" />
             </TouchableOpacity>
-            <Text className="text-2xl font-rubik-bold mt-2">Tejasvi | Raj</Text>
+            <Text className="text-2xl font-rubik-bold mt-2">{user?.name}</Text>
           </View>
         </View>
         <View className="flex flex-col mt-10">
-          <SettingsItem icon={icons.calendar} title="My Bookings" />
-          <SettingsItem icon={icons.wallet} title="My Bookings" />
+          <SettingsItem
+            icon={icons.calendar}
+            title="My Bookings"
+            showArrow={true}
+          />
+          <SettingsItem icon={icons.wallet} title="Payments" showArrow={true} />
+        </View>
+
+        <View className="flex flex-col mt-5 border-t pt-5 border-primary-200">
+          {settings.slice(2).map((item, index) => (
+            <SettingsItem
+              key={index}
+              {...item}
+            />
+          ))}
+        </View>
+
+        <View className="flex flex-col mt-5 border-t pt-5 border-primary-200">
+          <SettingsItem
+            icon={icons.logout}
+            title="Logout"
+            textStyle="text-red-500"
+            showArrow={false}
+            onPress={handleLogout}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
