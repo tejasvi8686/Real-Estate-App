@@ -1,121 +1,64 @@
-import {
-  ScrollView,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  ImageSourcePropType,
-  Alert,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-
 import images from "@/constants/images";
 import icons from "@/constants/icons";
-import { settings } from "@/constants/data";
-import { useGlobalContext } from "@/lib/global-provider";
-import { logout } from "@/lib/appwrite";
+import Search from "@/components/search";
+import Filters from "@/components/Filter";
+import { Card, FeaturedCard } from "@/components/Card";
 
-interface SettingsItemsProps {
-  icon: ImageSourcePropType;
-  title: string;
-  onPress?: () => void;
-  textStyle?: string;
-  showArrow?: boolean;
-}
-
-
-
-const SettingsItem = ({
-  icon,
-  title,
-  onPress,
-  textStyle,
-  showArrow,
-}: SettingsItemsProps) => {
+const Index = () => {
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      className="flex flex-row items-center justify-between py-3"
-    >
-      <View className="flex flex-row items-center gap-3">
-        <Image source={icon} className="size-6" />
-        <Text
-          className={`text-lg  font-rubik-medium text-black-300 ${textStyle} `}
-        >
-          {title}
-        </Text>
+    <SafeAreaView className="bg-white h-full ">
+      <View className="px-5 ">
+        <View className="flex flex-row items-center justify-between mt-5">
+          <View className="flex flex-row items-center">
+            <Image source={images.avatar} className="size-12 rounded-full" />
+            <View className="flex flex-col items-start ml-2 justify-center">
+              <Text className="text-xs font-rubik text-black-100">
+                Good Morning
+              </Text>
+              <Text className="text-base font-rubik-medium text-black-300 ">
+                Tejasvi
+              </Text>
+            </View>
+          </View>
+          <Image source={icons.bell} className="size-6" />
+        </View>
+
+        <Search />
+        <View className="my-5">
+          <View className="flex flex-row items-center justify-between">
+            <Text className="text-xl font-rubik-bold text-black-300 ">
+              Featured
+            </Text>
+            <TouchableOpacity>
+              <Text className="text-base font-rubik-bold text-primary-300">
+                See All
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        {/* <FeaturedCard />
+        <Card /> */}
+
+        <View className="mt-5">
+          <View className="flex flex-row items-center justify-between">
+            <Text className="text-xl font-rubik-bold text-black-300">
+              Our Recommendation
+            </Text>
+            <TouchableOpacity>
+              <Text className="text-base font-rubik-bold text-primary-300">
+                See all
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <Filters />
+        </View>
       </View>
-      {showArrow && <Image source={icons.rightArrow} className="size-5" />}
-    </TouchableOpacity>
+    </SafeAreaView>
   );
 };
 
-export default function Index() {
-  const { user ,refetch } = useGlobalContext()
-
-  const handleLogout = async () => {
-    try {
-      const result = await logout();
-      if (result) {
-        Alert.alert("Success", "You have been logged out successfully");
-        if (refetch) refetch();
-      } else {
-        Alert.alert("Error", "Something went wrong, please try again");
-      }
-    } catch (error) {
-      Alert.alert("Error", "An unexpected error occurred");
-    }
-  };
-  return (
-    <SafeAreaView className="h-full bg-white">
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerClassName="pb-32 px-7"
-      >
-        <View className="flex flex-row items-center justify-between mt-5">
-          <Text className="text-xl font-rubik-bold">Profile</Text>
-          <Image source={icons.bell} className="size-5" />
-        </View>
-        <View className="flex flex-row items-center justify-center mt-5">
-          <View className="flex flex-col items-center relative mt-5">
-            <Image
-              source={{uri: user?.avatar}}
-              className="size-44 relative rounded-full"
-            />
-            <TouchableOpacity className="absolute bottom-11 right-2 ">
-              <Image source={icons.edit} className="size-9" />
-            </TouchableOpacity>
-            <Text className="text-2xl font-rubik-bold mt-2">{user?.name}</Text>
-          </View>
-        </View>
-        <View className="flex flex-col mt-10">
-          <SettingsItem
-            icon={icons.calendar}
-            title="My Bookings"
-            showArrow={true}
-          />
-          <SettingsItem icon={icons.wallet} title="Payments" showArrow={true} />
-        </View>
-
-        <View className="flex flex-col mt-5 border-t pt-5 border-primary-200">
-          {settings.slice(2).map((item, index) => (
-            <SettingsItem
-              key={index}
-              {...item}
-            />
-          ))}
-        </View>
-
-        <View className="flex flex-col mt-5 border-t pt-5 border-primary-200">
-          <SettingsItem
-            icon={icons.logout}
-            title="Logout"
-            textStyle="text-red-500"
-            showArrow={false}
-            onPress={handleLogout}
-          />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+export default Index;
