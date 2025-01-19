@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Button,
   FlatList,
   Image,
   Text,
@@ -8,6 +9,7 @@ import {
 } from "react-native";
 import { useEffect } from "react";
 import { router, useLocalSearchParams } from "expo-router";
+import seed from "@/lib/seed";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import icons from "@/constants/icons";
@@ -129,7 +131,7 @@ const Home = () => {
               )}
             </View>
 
-            {/* <Button title="seed" onPress={seed} /> */}
+            <Button title="seed" onPress={seed} />
 
             <View className="mt-5">
               <View className="flex flex-row items-center justify-between">
